@@ -17,12 +17,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var totalLabel: UILabel!
     
     @IBOutlet weak var tipControl: UISegmentedControl!
+
+    @IBOutlet weak var instructionLabel: UILabel!
+    
+    @IBOutlet weak var tipRoundedLabel: UILabel!
+    
+    @IBOutlet weak var totalRoundedLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         tipLabel.text = "$0.00"
         totalLabel.text = "$0.00"
+        tipRoundedLabel.text = "$0.00"
+        totalRoundedLabel.text = "$0"
+        
+        billField.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,28 +42,35 @@ class ViewController: UIViewController {
 
     @IBAction func onEditingChanged(
         sender: AnyObject) {
-        var tipPercentages = [0.18, 0.2, 0.22]
+        var tipPercentages = [0.15, 0.17, 0.20]
             
-        var tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
+        let tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
             
-        var billAmount = NSString(string: billField.text!).doubleValue
+        let billAmount = NSString(string: billField.text!).doubleValue
             
-        var tip = billAmount * tipPercentage
+        let tip = billAmount * tipPercentage
             
-        var total = billAmount + tip
+        let total = billAmount + tip
+        
+        let totalRound = (round(total))
+            
+        let tipRound = totalRound - billAmount
+            
+        if billAmount != 0 {instructionLabel.text = ""}
             
         tipLabel.text = "$\(tip)"
-            totalLabel.text = "$\(total)"
+        totalLabel.text = "$\(total)"
+            
+        tipRoundedLabel.text = "$\(tipRound)"
+        totalRoundedLabel.text = "$\(totalRound)"
             
             
         tipLabel.text = String(format: "$%.2f", tip)
         totalLabel.text = String(format: "$%.2f", total)
             
+        tipRoundedLabel.text = String(format: "$%.2f", tipRound)
+        totalRoundedLabel.text = String(format: "$%.0f", totalRound)
             
     }
 
-    @IBAction func onTap(sender: AnyObject){
-        view.endEditing(true)
-    }
-}
-
+   }
